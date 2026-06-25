@@ -1,65 +1,84 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+import { useProducts } from "@/hooks/useProducts";
+import ProductList from "@/components/products/ProductList";
+
+export default function HomePage() {
+  const { products, loading } = useProducts();
+
+  // For demonstration, let's take the first 4 products as "New Arrivals"
+  const newProducts = products.slice(0, 4);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="flex flex-col w-full">
+      {/* Hero Slider Section */}
+      <section className="relative w-full h-[70vh] bg-gray-100 flex items-center justify-center overflow-hidden mb-16">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2071&auto=format&fit=crop" 
+            alt="Hero Banner" 
+            className="w-full h-full object-cover opacity-80"
+          />
+        </div>
+        <div className="relative z-10 text-center bg-white/90 p-12 max-w-2xl border border-black">
+          <h1 className="text-4xl md:text-5xl font-serif tracking-[0.2em] uppercase mb-4 text-black">
+            Nouvelle Collection
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-sm uppercase tracking-widest text-gray-700 mb-8">
+            Découvrez l'élégance intemporelle
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link 
+            href="/shop" 
+            className="inline-block bg-black text-white px-8 py-3 text-xs uppercase tracking-widest hover:bg-gray-800 transition-colors"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            Découvrir
+          </Link>
         </div>
-      </main>
+      </section>
+
+      {/* Categories Section */}
+      <section className="py-16 px-4 max-w-7xl mx-auto w-full">
+        <h2 className="text-center text-2xl font-light tracking-[0.2em] uppercase mb-12 text-gray-900 font-serif">
+          Catégories
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            { title: "Prêt-à-porter", img: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&auto=format&fit=crop" },
+            { title: "Accessoires", img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&auto=format&fit=crop" },
+            { title: "Chaussures", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&auto=format&fit=crop" }
+          ].map((cat, idx) => (
+            <div key={idx} className="group relative h-96 overflow-hidden cursor-pointer border border-black">
+              <img src={cat.img} alt={cat.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-500 flex items-center justify-center">
+                <h3 className="text-white text-xl uppercase tracking-widest font-serif border border-white px-6 py-2 bg-black/30 backdrop-blur-sm">
+                  {cat.title}
+                </h3>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* New Products Section */}
+      <section className="py-16 px-4 max-w-7xl mx-auto w-full border-t border-gray-200">
+        <h2 className="text-center text-2xl font-light tracking-[0.2em] uppercase mb-12 text-gray-900 font-serif">
+          Nouveautés
+        </h2>
+        {loading ? (
+          <p className="text-center text-sm uppercase tracking-widest">Chargement...</p>
+        ) : (
+          <ProductList products={newProducts} />
+        )}
+        <div className="mt-12 text-center">
+          <Link 
+            href="/shop" 
+            className="inline-block border border-black bg-white text-black px-8 py-3 text-xs uppercase tracking-widest hover:bg-black hover:text-white transition-colors"
+          >
+            Voir toute la boutique
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
